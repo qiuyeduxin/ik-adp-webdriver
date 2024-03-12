@@ -2,6 +2,5 @@ version: '1.0.0'
 services:
   crawler:
     build: .
-    platform: linux/amd64
     ports:
       - "8661:7575"

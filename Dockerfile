@@ -18,9 +18,6 @@ RUN addgroup -S pptruser && adduser -S -G pptruser pptruser \
     && chown -R pptruser:pptruser /app \
     && chown -R pptruser:pptruser /usr
 
-# Run everything after as non-privileged user.
-USER pptruser
-
 WORKDIR /app
 
 RUN npm install -g cnpm --registry=https://registry.npmmirror.com
@@ -30,6 +27,12 @@ COPY package*.json ./
 RUN cnpm install
 
 COPY . .
+
+RUN npm run build
+
+RUN chown -R pptruser:pptruser /app
+
+USER pptruser
 
 EXPOSE 7575
 

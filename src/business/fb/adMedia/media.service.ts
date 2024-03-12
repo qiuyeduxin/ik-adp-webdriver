@@ -108,9 +108,6 @@ export class MediaService {
             const adData = JSON.parse(data.replace('for (;;);', ''))
             adData.payload.results.forEach((itemList: any[]) => {
               itemList.forEach((item: any) => {
-                console.log('snapshot', item.snapshot)
-                console.log('cards', item.cards)
-                console.log('snapshot cards', item.snapshot.cards)
                 allData.push({
                   adArchiveID: item.adArchiveID,
                   categories: item.categories,
@@ -166,7 +163,10 @@ export class MediaService {
     }
 
     const allData = await getAdData(searchStr)
-    fs.writeFileSync('temp/data.json', JSON.stringify(allData))
+    if (!fs.existsSync('temp')) {
+      fs.mkdirSync('temp')
+    }
+    fs.writeFileSync(`temp/data-${Date.now()}.json`, JSON.stringify(allData))
     await sleep(1000)
     await browser.close()
 
