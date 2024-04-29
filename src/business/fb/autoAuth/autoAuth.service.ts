@@ -5,6 +5,7 @@ import type { IResponse } from '@/types'
 import { sleep } from '@/utils'
 import { Injectable } from '@nestjs/common'
 import axios from 'axios'
+import type { Browser } from 'puppeteer-core'
 
 @Injectable()
 export class AutoAuthService {
@@ -19,6 +20,7 @@ export class AutoAuthService {
       proxyDomain: browserInfo.proxy_domain,
       userAgent: browserInfo.user_agent
     }
+    let curBrowser: Browser = null
 
     try {
       const checkCodeRes = await axios.get(
@@ -38,6 +40,11 @@ export class AutoAuthService {
 
       const loginPromise = new Promise((resolve, reject) => {
         loginPage.on('load', async () => {
+          const loadTime = +autoTimeMap.get('load')
+          autoTimeMap.set('load', loadTime + 1)
+          if (!loadTime) {
+            await sleep(2000)
+          }
           const url = loginPage.url()
           if (url.includes('com/login/?') || url.includes('com/login.php?')) {
             // 登录页面
@@ -118,6 +125,7 @@ export class AutoAuthService {
 
       await loginPromise
       const { page, browser } = await createPage(options)
+      curBrowser = browser
       await loginPage.close()
       page.goto(authUrl)
 
@@ -146,11 +154,11 @@ export class AutoAuthService {
         })
       })
       await pagePromise
-      await sleep(1000)
-
-      await browser.close()
     } catch (err) {
       throw new ApiException(err.message, ApiCode.FB_AUTO_AUTH_ERROR, 500)
+    }
+    if (curBrowser) {
+      curBrowser.close()
     }
 
     return {
