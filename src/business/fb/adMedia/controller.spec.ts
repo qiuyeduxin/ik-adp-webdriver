@@ -16,7 +16,11 @@ describe('AppController', () => {
 
   describe('root', () => {
     it('should return "Hello World!"', () => {
-      expect(appController.getHello('nihao')).toBe({ data: 'It is ok', dm_error: 0, error_msg: 'success' })
+      expect(appController.getHello()).toBe({
+        data: 'It is ok',
+        dm_error: 0,
+        error_msg: 'success'
+      })
     })
   })
 })

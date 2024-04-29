@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common'
 import createPage from '@/browser/createPage'
-import { sleep } from '@/utils'
+import { sleep, stringifyParams } from '@/utils'
 import * as urlApi from 'node:url'
 import { IResponse } from '@/types'
 import axios from 'axios'
 import * as fs from 'node:fs'
+import { Logger } from '@/log'
 
 @Injectable()
 export class MediaService {
@@ -89,8 +90,17 @@ export class MediaService {
 
     const { page, browser } = await createPage(options)
     loginPage.close()
+    const urlParams = {
+      active_status: 'all',
+      q: searchStr,
+      country: 'CN',
+      search_type: 'keyword_unordered',
+      media_type: 'all',
+      ad_type: 'all'
+    }
+
     page.goto(
-      `https://www.facebook.com/ads/library/?active_status=all&ad_type=all&country=CN&q=${searchStr}&sort_data%5Bdirection%5D=desc&sort_data%5Bmode%5D=relevancy_monthly_grouped&search_type=keyword_unordered&media_type=all`
+      `https://www.facebook.com/ads/library/?${stringifyParams(urlParams)}`
     )
 
     const getAdData = (q: string): Promise<any[]> => {
@@ -163,10 +173,6 @@ export class MediaService {
     }
 
     const allData = await getAdData(searchStr)
-    if (!fs.existsSync('temp')) {
-      fs.mkdirSync('temp')
-    }
-    fs.writeFileSync(`temp/data-${Date.now()}.json`, JSON.stringify(allData))
     await sleep(1000)
     await browser.close()
 

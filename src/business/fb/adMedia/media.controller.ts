@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common'
+import { Body, Controller, Get, Ip, Param, Post, Query } from '@nestjs/common'
 import { MediaService } from './media.service'
 import { IResponse } from '@/types'
 
@@ -7,8 +7,7 @@ export class MediaController {
   constructor(private readonly appService: MediaService) {}
 
   @Get('/test')
-  getHello(@Param('name') name: string): IResponse {
-    console.log('get test name', name)
+  getHello(): IResponse {
     return this.appService.getHello()
   }
 
@@ -27,8 +26,7 @@ export class MediaController {
   }
 
   @Post('/post_add')
-  postAddAdsMedia(@Body() names: string[]): IResponse {
-    console.log('post names', names)
+  postAddAdsMedia(@Body('names') names: string[]): IResponse {
     return {
       error_msg: 'success',
       dm_error: 0,
