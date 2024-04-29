@@ -2,6 +2,7 @@ import createPage from '@/browser/createPage'
 import { ApiException } from '@/exception/Exception'
 import { ApiCode } from '@/exception/api.enum'
 import type { IResponse } from '@/types'
+import { sleep } from '@/utils'
 import { Injectable } from '@nestjs/common'
 import axios from 'axios'
 
@@ -145,6 +146,7 @@ export class AutoAuthService {
         })
       })
       await pagePromise
+      await sleep(1000)
 
       await browser.close()
     } catch (err) {

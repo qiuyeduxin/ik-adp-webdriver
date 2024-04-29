@@ -54,7 +54,7 @@ async function getPuppeteerOptions(
       '--disable-metrics-reporting',
       '--disable-logging'
     ],
-    headless: false,
+    headless: true,
     defaultViewport: null,
     ignoreHTTPSErrors: true,
     ignoreDefaultArgs: [
