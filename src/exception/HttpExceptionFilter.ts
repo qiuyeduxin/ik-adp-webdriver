@@ -14,6 +14,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const response = ctx.getResponse()
     const status = exception.getStatus()
     const errRes: IResponse = {
+      data: null,
       dm_error: status,
       error_msg: exception?.response?.message
     }

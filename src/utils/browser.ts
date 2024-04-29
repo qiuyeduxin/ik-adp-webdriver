@@ -2,13 +2,17 @@ import { CreateBrowserOptions } from '../types/browser'
 import { LaunchOptions } from 'puppeteer-core'
 import envConfig from '@/config/env'
 
+const devBrowserPath =
+  '/Users/ywen/Library/Caches/ikAdp/chromium/mac_arm-1264446/chrome-mac/Chromium.app/Contents/MacOS/Chromium'
+// const devBrowserPath =
+//   '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
 /**
  * 获取浏览器路径
  * @returns {string} 浏览器路径
  */
 function getBrowserPath(): string {
   return envConfig.isDev
-    ? '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+    ? devBrowserPath
     : process.env.PUPPETEER_EXECUTABLE_PATH
 }
 
@@ -50,7 +54,7 @@ async function getPuppeteerOptions(
       '--disable-metrics-reporting',
       '--disable-logging'
     ],
-    headless: true,
+    headless: false,
     defaultViewport: null,
     ignoreHTTPSErrors: true,
     ignoreDefaultArgs: [

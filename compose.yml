@@ -3,4 +3,11 @@ services:
   crawler:
     build: .
     ports:
-      - "8661:7575"
+      - "8661:3000"
+    restart: always
+    networks:
+      - my-net
+
+networks:
+  my-net:
+    driver: bridge

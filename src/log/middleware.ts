@@ -22,6 +22,5 @@ export function loggerMiddleware(req: Request, res: Response, next: () => any) {
     Logger.warn(logFormat)
   } else {
     Logger.access(logFormat)
-    Logger.log(logFormat)
   }
 }

@@ -3,7 +3,7 @@ declare type CreateBrowserOptions = {
   name: string
   proxyUser?: string
   proxyPwd?: string
-  proxyDomain: string
+  proxyDomain?: string
   proxyServer?: string
   userAgent: string
 }

@@ -1,7 +1,7 @@
 export default {
   http: {
     host: 'localhost',
-    port: 7575
+    port: 3000
   },
   logPath: './logs'
 }

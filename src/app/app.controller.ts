@@ -6,9 +6,8 @@ import type { IResponse } from '@/types'
 // @UseGuards(AuthGuard)
 export class AppController {
   constructor(private readonly appService: AppService) {}
-
   @Get('/test')
-  getHello(): IResponse {
+  getHello(): Promise<IResponse<unknown>> {
     return this.appService.getHello()
   }
 }

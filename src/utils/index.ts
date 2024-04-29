@@ -1,3 +1,4 @@
+import type { Fun, IObject } from '@/types'
 import { exec } from 'node:child_process'
 
 // 休眠
@@ -61,4 +62,51 @@ function execMd(md: string): Promise<number> {
 
 function noop() {}
 
-export { sleep, waitElNoTimeout, getCurTime, execMd, noop, getFormatDate }
+const stringifyParams = (
+  params: IObject<string, string | number | boolean>,
+  cb?: Fun
+): string => {
+  return Object.keys(params)
+    .map((name) => {
+      const val = params[name]
+      const res = typeof cb === 'function' ? cb(val, name) : val
+      return `${name}=${res}`
+    })
+    .join('&')
+}
+
+const getUrlParams = (url: string): IObject<string, any> => {
+  const urlParams: Record<string, string> = {}
+
+  if (!url.includes('?')) {
+    return urlParams
+  }
+
+  // 防止hash值, 影响参数名称
+  const search: string = url.replace(/.*\?/, '')
+
+  // 如果没有, 则返回空对象
+  if (search) {
+    const searchArr: Array<string> = decodeURIComponent(search).split('&')
+    searchArr.forEach((str) => {
+      const [key, value] = str.split('=')
+      // 如果已经有该参数就不添加进去了
+      if (key && !urlParams[key]) {
+        urlParams[key] = value
+      }
+    })
+  }
+
+  return urlParams
+}
+
+export {
+  sleep,
+  waitElNoTimeout,
+  getCurTime,
+  execMd,
+  noop,
+  getFormatDate,
+  stringifyParams,
+  getUrlParams
+}

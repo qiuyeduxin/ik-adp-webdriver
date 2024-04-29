@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common'
 
 @Injectable()
 export class AppService {
-  getHello(): IResponse {
+  async getHello(): Promise<IResponse<unknown>> {
     return { dm_error: 0, data: 'Hello World!', error_msg: 'success' }
   }
 }

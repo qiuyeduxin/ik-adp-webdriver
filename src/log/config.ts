@@ -21,11 +21,6 @@ export default {
       filename: `${envConfig.logPath}/app`,
       alwaysIncludePattern: true,
       numToKeep: 7,
-      layout: {
-        type: 'pattern',
-        pattern:
-          '{"date":"%d","level":"%p","category":"%c","host":"%h","pid":"%z","data":\'%m\'}'
-      },
       pattern: 'yyyy-MM-dd.log',
       encoding: 'utf-8'
     },
@@ -34,11 +29,6 @@ export default {
       type: 'dateFile',
       filename: `${envConfig.logPath}/error`,
       alwaysIncludePattern: true,
-      layout: {
-        type: 'pattern',
-        pattern:
-          '{"date":"%d","level":"%p","category":"%c","host":"%h","pid":"%z","data":\'%m\'}'
-      },
       numToKeep: 7,
       pattern: 'yyyy-MM-dd.log',
       encoding: 'utf-8'
